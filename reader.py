@@ -51,27 +51,31 @@ while True:
     print("")
 
     img_path = input(colorama.Fore.RED+'Lütfen okumak istediğiniz fotoğrafın uzantısı ile beraber ismini giriniz:')
-    data = get_data(img_path)
+    
+    try:
+        data = get_data(img_path)
+        coordinates = get_gps_info(data)
+        datetime = get_datetime(data)
 
-    coordinates = get_gps_info(data)
-    datetime = get_datetime(data)
+        print('')
 
-    print('')
+        if coordinates:
+            print(colorama.Fore.GREEN+f'İşte fotoğrafın çekildiği konum: ENLEM:{coordinates[0]} |   BOYLAM:{coordinates[1]}')
+            print(colorama.Fore.RED+f'Google Maps Linki: https://www.google.com/maps?q={coordinates[0]},{coordinates[1]}')
+        else:
+            print('GPS Bilgisi Alınamadı')
 
-    if coordinates:
-        print(colorama.Fore.GREEN+f'İşte fotoğrafın çekildiği konum: ENLEM:{coordinates[0]} |   BOYLAM:{coordinates[1]}')
-        print(colorama.Fore.RED+f'Google Maps Linki: https://www.google.com/maps?q={coordinates[0]},{coordinates[1]}')
-    else:
-        print('GPS Bilgisi Alınamadı')
+        print('')
 
-    print('')
+        if datetime:
+            print(colorama.Fore.GREEN+f'İşte fotoğrafın çekildiği tarih ve saat: {datetime}')
+        else:
+            print('Tarih ve Saat Bilgisi Alınamadı')
 
-    if datetime:
-        print(colorama.Fore.GREEN+f'İşte fotoğrafın çekildiği tarih ve saat: {datetime}')
-    else:
-        print('Tarih ve Saat Bilgisi Alınamadı')
-
-    print('')
+        print('')
+    
+    except:
+        print('Okumaya Çalıştığınız dosya bulunamadı')
 
     option = input(colorama.Fore.BLUE+'Devam etmek istiyor musunuz? (y/N):')
     if option.strip().lower() != 'y':
